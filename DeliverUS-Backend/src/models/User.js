@@ -14,7 +14,6 @@ const loadModel = (sequelize, DataTypes) => {
       User.hasMany(models.Order, { foreignKey: 'userId' })
 
       User.hasMany(models.Review, { foreignKey: 'customerId', as: 'reviews' })
-Reservados todos los derechos. No se permite la explotación económica ni la transformación de esta obra. Queda permitida la impresión en su totalidad.
     }
   }
   User.init({
