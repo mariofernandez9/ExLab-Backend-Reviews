@@ -24,7 +24,13 @@ const loadModel = (sequelize, DataTypes) => {
     }
 
     async getAvgStars () {
-
+      try {
+        const reviews = await this.getReviews()
+        const totalStars = reviews.reduce((acc, review) => acc + review.stars, 0)
+        return reviews.length > 0 ? totalStars / reviews.length : 0
+      } catch (err) {
+        return err
+      }
     }
   }
 
