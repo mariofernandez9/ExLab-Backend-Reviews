@@ -1,11 +1,32 @@
 import { Order, Review } from '../models/models.js'
 
 const userHasPlacedOrderInRestaurant = async (req, res, next) => {
-  res.status(500).send('To be implemented')
+  try {
+    const userId = req.user.id
+    const restaurantId = req.params.restaurantId
+    const order =  await Order.findOne({ where: {userId, restaurantId} })
+    if (!order) {
+      return res.status(409).json({ message: 'You can only review restaurants you have placed an order in.' })
+    }
+    next()
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
 }
 
 const checkCustomerHasNotReviewed = async (req, res, next) => {
-  res.status(500).send('To be implemented')
+  try {
+    const userId = req.user.id
+    const restaurantId = req.params.restaurantId
+    const review =  await Review.findOne({ where: {customerId: userId, restaurantId} })
+    if (review) {
+      return res.status(409).json({ message: 'You have already reviewed this restaurant.' })
+    }
+    next()
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
+
 }
 
 const checkReviewOwnership = async (req, res, next) => {
